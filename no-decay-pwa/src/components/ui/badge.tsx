@@ -6,13 +6,25 @@ interface BadgeItemProps {
   icon?: string;
   imageSrc?: string;
   onRemove?: () => void;
+  onClick?: () => void; // ✅ Tambahkan ini
   className?: string;
   children?: React.ReactNode;
 }
 
-export function BadgeItem({ label, icon, imageSrc, onRemove, className, children }: BadgeItemProps) {
+export function BadgeItem({
+  label,
+  icon,
+  imageSrc,
+  onRemove,
+  onClick,
+  className,
+  children,
+}: BadgeItemProps) {
   return (
     <div
+      onClick={onClick} // ✅ Gunakan di sini
+      role="button"
+      tabIndex={0}
       className={cn(
         "h-[30px] px-[7px] py-[9px] bg-[#FEF3E2] rounded-[12px] flex items-center gap-[5px] text-[10px] font-normal text-green-900",
         className
@@ -27,7 +39,13 @@ export function BadgeItem({ label, icon, imageSrc, onRemove, className, children
         <span>{label}</span>
       </div>
       {onRemove && (
-        <button onClick={onRemove} className="flex items-center">
+        <button
+          onClick={(e) => {
+            e.stopPropagation(); // supaya tidak trigger onClick utama
+            onRemove();
+          }}
+          className="flex items-center"
+        >
           <X className="w-[10px] h-[10px] text-green-900" />
         </button>
       )}
