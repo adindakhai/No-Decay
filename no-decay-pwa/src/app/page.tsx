@@ -1,7 +1,7 @@
 import GreetingCard from "@/components/ui/greeting-card"
 import CategoryButtons from "@/components/ui/category-buttons"
 import ContainerCards from "@/components/ui/container-cards"
-import Navbar from "@/components/ui/navbar"
+import { Navbar } from "@/components/ui/navbar";
 
 export default function HomePage() {
   return (
