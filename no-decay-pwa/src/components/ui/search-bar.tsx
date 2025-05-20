@@ -1,7 +1,7 @@
 import { BadgeItem } from "@/components/ui/badge";
 
 interface SearchBarProps {
-  value: string;
+  value?: string; // 🛠️ optional + default
   onChange: (val: string) => void;
   onSearch?: () => void;
   selectedBadges?: string[];
@@ -9,26 +9,26 @@ interface SearchBarProps {
 }
 
 export default function SearchBar({
-  value,
+  value = "", // ✅ default value untuk hindari error .trim()
   onChange,
   onSearch,
   selectedBadges = [],
-  onRemoveBadge, // ✅ tambahkan ini
+  onRemoveBadge,
 }: SearchBarProps) {
   const isDisabled = value.trim() === "" && selectedBadges.length === 0;
 
   return (
     <div className="relative flex items-center border border-green-900 rounded-[12px] shadow-xl bg-white px-3 py-2">
-{selectedBadges?.map((badge) => (
-  <div key={badge} className="mr-2">
-    <BadgeItem
-      label={badge}
-      imageSrc="/image/y.svg"
-      onRemove={() => onRemoveBadge?.(badge)}
-      className="bg-[#FEF3E2] border border-green-900 text-green-900 px-[7px] py-[6px] h-[30px] text-[10px] font-normal"
-    />
-  </div>
-))}
+      {selectedBadges.map((badge) => (
+        <div key={badge} className="mr-2">
+          <BadgeItem
+            label={badge}
+            imageSrc="/image/y.svg"
+            onRemove={() => onRemoveBadge?.(badge)}
+            className="bg-[#FEF3E2] border border-green-900 text-green-900 px-[7px] py-[6px] h-[30px] text-[10px] font-normal"
+          />
+        </div>
+      ))}
 
       <input
         type="text"

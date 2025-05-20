@@ -64,12 +64,19 @@ model VerificationToken {
   @@id([identifier, token])
 }
 
+enum FoodStatus {
+  Fresh
+  Warning
+  Spoiled
+}
+
 model SensorData {
-  id          String   @id @default(uuid())
+  id          String     @id @default(uuid())
   containerId String?
   temperature Float
   humidity    Float
   mq4         Int
   mq135       Int
-  createdAt   DateTime @default(now())
+  status      FoodStatus @default(Fresh) // Prediksi status makanan
+  createdAt   DateTime   @default(now())
 }

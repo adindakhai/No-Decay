@@ -1,3 +1,6 @@
+"use client"
+
+import { useState } from "react"
 import Image from "next/image"
 import SearchBar from "@/components/ui/search-bar"
 
@@ -6,6 +9,8 @@ interface GreetingCardProps {
 }
 
 export default function GreetingCard({ name }: GreetingCardProps) {
+  const [searchInput, setSearchInput] = useState("")
+
   return (
     <div className="relative overflow-hidden rounded-xl text-white p-5 bg-gradient-to-br from-[#115437] to-[#FFE9A0]">
       <div className="flex items-start">
@@ -30,7 +35,10 @@ export default function GreetingCard({ name }: GreetingCardProps) {
       </div>
 
       <div className="mt-4 relative z-10">
-        <SearchBar />
+        <SearchBar
+          value={searchInput}
+          onChange={setSearchInput}
+        />
       </div>
 
       <div className="absolute right-5 bottom-10 w-36 h-auto z-100">
