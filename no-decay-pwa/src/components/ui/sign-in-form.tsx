@@ -1,19 +1,35 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
-import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { signIn } from "next-auth/react"
 import { Mail, Lock } from "lucide-react"
+import Link from "next/link"
 
 export default function SignInForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter()
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle sign in logic here
-    console.log({ email, password })
+    setLoading(true)
+
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    })
+
+    setLoading(false)
+
+    if (res?.ok) {
+      router.push("/") // Redirect ke homepage kalau sukses
+    } else {
+      alert("Invalid email or password")
+    }
   }
 
   return (
@@ -51,9 +67,10 @@ export default function SignInForm() {
       </div>
       <button
         type="submit"
+        disabled={loading}
         className="w-full py-3 bg-green-800 text-white font-medium rounded-md hover:bg-green-900 transition-colors"
       >
-        Sign In
+        {loading ? "Signing in..." : "Sign In"}
       </button>
     </form>
   )
