@@ -1,12 +1,14 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "name" TEXT,
+    "email" TEXT NOT NULL,
+    "emailVerified" TIMESTAMP(3),
+    "image" TEXT,
+    "password" TEXT NOT NULL,
 
-  - You are about to drop the column `createdAt` on the `User` table. All the data in the column will be lost.
-
-*/
--- AlterTable
-ALTER TABLE "User" DROP COLUMN "createdAt",
-ADD COLUMN     "emailVerified" TIMESTAMP(3);
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Account" (
@@ -44,6 +46,22 @@ CREATE TABLE "VerificationToken" (
 
     CONSTRAINT "VerificationToken_pkey" PRIMARY KEY ("identifier","token")
 );
+
+-- CreateTable
+CREATE TABLE "SensorData" (
+    "id" TEXT NOT NULL,
+    "containerId" TEXT,
+    "temperature" DOUBLE PRECISION NOT NULL,
+    "humidity" DOUBLE PRECISION NOT NULL,
+    "mq4" INTEGER NOT NULL,
+    "mq135" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "SensorData_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
