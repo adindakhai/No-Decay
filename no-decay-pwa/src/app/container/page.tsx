@@ -1,164 +1,115 @@
-import { ArrowLeft, Search, Bell, Users, Plus, Calendar, Package, Thermometer, Droplets, Wind } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+"use client"
 
-/**
- * Container list page – No‑Decay PWA
- * Front‑end only – uses shadcn/ui + TailwindCSS
- */
+import Link from "next/link"
+import {
+  ArrowLeft, Search, Bell, Users, Plus, Calendar,
+  Thermometer, Droplets, Wind, LayoutDashboard, Lightbulb
+} from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
+type Status = "Fresh" | "Warning" | "Spoiled"
+
+const statusColor: Record<Status, string> = {
+  Fresh: "bg-green-900",
+  Warning: "bg-orange-600",
+  Spoiled: "bg-red-700",
+}
+
+const indicatorColor: Record<Status, string> = {
+  Fresh: "text-green-800",
+  Warning: "text-orange-600",
+  Spoiled: "text-red-600",
+}
+
+const containers: { id: number; name: string; date: string; status: Status }[] = [
+  {
+    id: 1,
+    name: "Container 01",
+    date: "12 - 05 - 2025",
+    status: "Fresh",
+  },
+  {
+    id: 2,
+    name: "Container 02",
+    date: "13 - 05 - 2025",
+    status: "Warning",
+  },
+  {
+    id: 3,
+    name: "Container 03",
+    date: "14 - 05 - 2025",
+    status: "Spoiled",
+  }
+]
+
 export default function ContainerPage() {
-  const containers = [
-    {
-      id: 1,
-      name: "Container 01",
-      date: "12 - 05 - 2025",
-      status: "Fresh" as Status,
-      gas: "normal" as Level,
-      temp: "normal" as Level,
-      humid: "normal" as Level,
-    },
-    {
-      id: 2,
-      name: "Container 02",
-      date: "13 - 05 - 2025",
-      status: "Warning" as Status,
-      gas: "normal" as Level,
-      temp: "warning" as Level,
-      humid: "normal" as Level,
-    },
-    {
-      id: 3,
-      name: "Container 03",
-      date: "14 - 05 - 2025",
-      status: "Spoiled" as Status,
-      gas: "critical" as Level,
-      temp: "normal" as Level,
-      humid: "warning" as Level,
-    },
-  ];
-
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      {/* Top‑bar */}
-      <header className="flex items-center gap-4 p-4">
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <ArrowLeft className="h-6 w-6 text-[#115437]" />
-        </Button>
-        <h1 className="flex-1 text-center text-xl font-semibold text-[#115437] mr-10">
-          Container
-        </h1>
-      </header>
-
-      <main className="flex-1 px-6 pb-36">
-        {/* Title */}
-        <h2 className="mb-4 text-3xl font-bold text-[#115437]">My Container</h2>
-
-        {/* Search */}
-        <div className="relative mb-6">
-          <Input
-            placeholder="Search Container"
-            className="pl-4 pr-12 py-3 rounded-xl border text-base border-[#115437] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#115437]"
-          />
-          <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#115437]" />
+    <div className="pb-28 px-4 pt-4">
+      {/* Top Bar */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <ArrowLeft className="text-green-900" />
+          <h1 className="text-xl font-bold text-green-900">My Container</h1>
         </div>
+        <Plus className="text-green-900" />
+      </div>
 
-        {/* Cards */}
-        <div className="space-y-4">
-          {containers.map((c) => (
-            <Card
-              key={c.id}
-              className="relative rounded-2xl bg-[#FFF7EA] shadow-sm"
-            >
-              {/* Status badge */}
-              <div
-                className="absolute right-0 top-0 rounded-tr-2xl rounded-bl-2xl px-4 py-1 text-sm font-medium text-white"
-                style={{ backgroundColor: statusColor[c.status] }}
-              >
-                {c.status}
-              </div>
+      {/* Search Bar */}
+      <div className="relative mb-6">
+        <Input
+          placeholder="Search Container"
+          className="bg-white border-[#115437] focus-visible:ring-[#115437] rounded-md shadow-md"
+        />
+        <Search className="absolute right-3 top-2.5 text-green-900" size={20} />
+      </div>
 
-              <CardContent className="flex gap-4 p-4">
-                <Package className="h-14 w-14 text-[#115437]" />
-
-                <div className="flex flex-col flex-1">
-                  <span className="text-lg font-semibold text-[#115437]">
-                    {c.name}
-                  </span>
-
-                  <div className="mt-1 flex items-center gap-2 text-[#115437]">
-                    <Calendar className="h-4 w-4" />
-                    <span className="text-sm">{c.date}</span>
+      {/* Container Cards */}
+      <div className="space-y-4">
+        {containers.map((container) => (
+          <Link key={container.id} href={`/container/${container.id}`}>
+            <Card className="bg-[#FFF6EB] rounded-2xl p-4">
+              <CardContent>
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <p className="font-semibold text-green-900">{container.name}</p>
+                    <div className="flex items-center gap-1 text-green-900 text-sm">
+                      <Calendar size={14} />
+                      {container.date}
+                    </div>
                   </div>
-
-                  <div className="mt-4 flex items-center gap-6">
-                    <SensorBadge label="Gas" level={c.gas} />
-                    <SensorBadge label="Temperature" level={c.temp} />
-                    <SensorBadge label="Humidity" level={c.humid} />
+                  <div className={`text-xs text-white px-3 py-1 rounded-md font-semibold ${statusColor[container.status]}`}>
+                    {container.status}
+                  </div>
+                </div>
+                <div className="flex justify-between px-2">
+                  <div className="flex flex-col items-center text-green-900">
+                    <Wind size={20} />
+                    <span className="text-xs mt-1">Gas</span>
+                  </div>
+                  <div className="flex flex-col items-center text-green-900">
+                    <Thermometer size={20} />
+                    <span className="text-xs mt-1">Temperature</span>
+                  </div>
+                  <div className="flex flex-col items-center text-green-900">
+                    <Droplets size={20} />
+                    <span className="text-xs mt-1">Humidity</span>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      </main>
-
-      {/* Bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 flex justify-center pb-6">
-        <div className="relative w-full max-w-md px-4">
-          {/* Bar */}
-          <div className="flex items-center justify-between rounded-2xl bg-[#115437] px-8 py-4 text-white shadow-md">
-            <Bell className="h-6 w-6" />
-            <Users className="h-6 w-6" />
-          </div>
-
-          {/* FAB */}
-          <button
-            className="absolute left-1/2 top-0 -translate-y-1/2 -translate-x-1/2 flex h-14 w-14 items-center justify-center rounded-full border border-[#115437] bg-[#FFE9A0] shadow-md"
-          >
-            <Plus className="h-8 w-8 text-[#115437]" />
-          </button>
-        </div>
-      </nav>
-    </div>
-  );
-}
-
-// ————————————————————————————————————————————————————————————
-// Helpers & small components
-// ————————————————————————————————————————————————————————————
-type Status = "Fresh" | "Warning" | "Spoiled";
-type Level = "normal" | "warning" | "critical";
-
-const statusColor: Record<Status, string> = {
-  Fresh: "#0B5E36",
-  Warning: "#E1560E",
-  Spoiled: "#B80B0B",
-};
-
-const levelColor: Record<Level, string> = {
-  normal: "#0B5E36",
-  warning: "#E1560E",
-  critical: "#B80B0B",
-};
-
-function SensorBadge({ label, level }: { label: string; level: Level }) {
-  const icon =
-    label === "Gas"
-      ? Wind
-      : label === "Temperature"
-      ? Thermometer
-      : Droplets;
-  const Icon = icon;
-  return (
-    <div className="flex items-center gap-2">
-      <div
-        className="flex h-9 w-9 items-center justify-center rounded-full border-2"
-        style={{ borderColor: levelColor[level] }}
-      >
-        <Icon className="h-4 w-4" style={{ color: levelColor[level] }} />
+          </Link>
+        ))}
       </div>
-      <span className="text-sm text-[#115437]">{label}</span>
+
+      {/* Bottom Navigation Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-green-900 p-4 rounded-t-2xl flex justify-around items-center">
+        <Bell className="text-white" />
+        <LayoutDashboard className="text-white" />
+        <Lightbulb className="text-white" />
+        <Users className="text-white" />
+      </div>
     </div>
-  );
+  )
 }
