@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import axios from "axios"
 
 export async function POST(req: Request) {
   try {
@@ -13,7 +14,8 @@ export async function POST(req: Request) {
       )
     }
 
-    const newData = await prisma.sensorData.create({
+    // 1. Simpan data sensor ke DB
+    const sensorData = await prisma.sensorData.create({
       data: {
         temperature,
         humidity,
@@ -23,11 +25,32 @@ export async function POST(req: Request) {
       },
     })
 
-    return NextResponse.json({ success: true, data: newData })
+    // 2. Panggil backend Flask untuk prediksi
+    const mlResponse = await axios.post("http://localhost:5000/predict", {
+      temperature,
+      humidity,
+      mq4,
+      mq135,
+    })
+    const status = mlResponse.data.status as string  // Fresh / Warning / Spoiled
+
+    // 3. Simpan hasil prediksi ke DB
+    const prediction = await prisma.prediction.create({
+      data: {
+        sensorId: sensorData.id,
+        status,
+      },
+    })
+
+    return NextResponse.json({
+      success: true,
+      data: sensorData,
+      prediction: prediction.status,
+    })
   } catch (error) {
     console.error("POST /api/sensor error:", error)
     return NextResponse.json(
-      { success: false, error: "Failed to save data" },
+      { success: false, error: "Failed to save or predict" },
       { status: 500 }
     )
   }
@@ -46,11 +69,12 @@ export async function GET(req: Request) {
   }
 
   try {
-    // If latest=true → return most recent data
+    // Jika latest=true → return data terbaru + prediction
     if (latest === "true") {
       const latestData = await prisma.sensorData.findFirst({
         where: { containerId },
         orderBy: { createdAt: "desc" },
+        include: { prediction: true },
       })
 
       if (!latestData) {
@@ -60,16 +84,24 @@ export async function GET(req: Request) {
         )
       }
 
-      return NextResponse.json(latestData)
+      return NextResponse.json({
+        temperature: latestData.temperature,
+        humidity: latestData.humidity,
+        mq4: latestData.mq4,
+        mq135: latestData.mq135,
+        prediction: latestData.prediction?.status ?? null,
+      })
     }
 
-    // Else → return full list for chart
+    // Else → return full list untuk chart
     const data = await prisma.sensorData.findMany({
       where: { containerId },
       orderBy: { createdAt: "asc" },
       select: {
         temperature: true,
         humidity: true,
+        mq4: true,      
+        mq135: true,    
         createdAt: true,
       },
     })
@@ -82,6 +114,8 @@ export async function GET(req: Request) {
       }),
       temperature: item.temperature,
       humidity: item.humidity,
+      mq4: item.mq4,        
+      mq135: item.mq135,    
     }))
 
     return NextResponse.json(formatted)

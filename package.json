@@ -8,5 +8,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.8.2",
+    "json2csv": "^6.0.0-alpha.2",
+    "prisma": "^6.8.2"
+  }
 }

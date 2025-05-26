@@ -79,4 +79,13 @@ model SensorData {
   mq135       Int
   status      FoodStatus @default(Fresh) // Prediksi status makanan
   createdAt   DateTime   @default(now())
+  prediction  Prediction?
+}
+
+model Prediction {
+  id         String      @id @default(uuid())
+  sensorId   String      @unique
+  status     String
+  createdAt  DateTime    @default(now())
+  sensorData SensorData  @relation(fields: [sensorId], references: [id])
 }

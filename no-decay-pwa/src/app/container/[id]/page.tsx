@@ -14,6 +14,7 @@ type LatestSensor = {
   humidity: number
   mq4: number
   mq135: number
+  prediction?: string    // ← tambahkan
 }
 
 export default function ContainerDetailPage() {
@@ -25,8 +26,10 @@ export default function ContainerDetailPage() {
   useEffect(() => {
     async function fetchLatest() {
       try {
-        const res = await fetch(`/api/sensor?containerId=${containerId}&latest=true`)
-        const data = await res.json()
+        const res = await fetch(
+          `/api/sensor?containerId=${containerId}&latest=true`
+        )
+        const data: LatestSensor = await res.json()
         setLatest(data)
       } catch (err) {
         console.error("Failed to fetch latest sensor data", err)
@@ -34,7 +37,6 @@ export default function ContainerDetailPage() {
     }
 
     fetchLatest()
-
     const interval = setInterval(fetchLatest, 30000)
     return () => clearInterval(interval)
   }, [containerId])
@@ -59,12 +61,32 @@ export default function ContainerDetailPage() {
             height={150}
             className="rounded-xl"
           />
-          <p className="mt-4 text-xl font-semibold text-green-900">Container {containerId}</p>
+
+          {/* Judul + Prediction */}
+          <p className="mt-4 text-xl font-semibold text-green-900">
+            Container {containerId}
+          </p>
+          {latest?.prediction && (
+            <p
+              className={`mt-1 text-base font-medium ${
+                latest.prediction === "fresh"
+                  ? "text-green-600"
+                  : latest.prediction === "warning"
+                  ? "text-yellow-500"
+                  : "text-red-600"
+              }`}
+            >
+              Status: {latest.prediction}
+            </p>
+          )}
+
+          {/* Tanggal */}
           <div className="flex items-center text-green-900 gap-2 mt-1">
             <Calendar size={16} />
             <span>12 - 05 - 2025</span>
           </div>
 
+          {/* Sensor Values */}
           <div className="flex justify-around w-full mt-4">
             <div className="text-center">
               <Wind className="mx-auto text-green-900" />
@@ -91,16 +113,11 @@ export default function ContainerDetailPage() {
         </CardContent>
       </Card>
 
-      {/* Prediction */}
+      {/* Prediction Chart */}
       <div>
-        <h2 className="text-xl font-semibold text-green-900 mb-2">Prediction</h2>
-        <div className="flex justify-around bg-[#FFF6EB] text-green-900 p-2 rounded-xl">
-          <span>01.00 - 06.00</span>
-          <span>07.00 - 12.00</span>
-          <span>13.00 - 18.00</span>
-          <span>19.00 - 00.00</span>
-        </div>
-
+        <h2 className="text-xl font-semibold text-green-900 mb-2">
+          Prediction
+        </h2>
         <div className="w-full mt-4">
           <SensorChart containerId={containerId} />
         </div>
