@@ -1,11 +1,13 @@
+import Link from "next/link"
+
 export default function CategoryButtons() {
   return (
     <div className="space-y-3">
       <h2 className="text-lg font-medium">Find What You Need</h2>
       <div className="flex justify-between">
-        <CategoryButton icon="tips" label="Tips" />
-        <CategoryButton icon="container" label="Container" />
-        <CategoryButton icon="help" label="Help" />
+        <CategoryButton icon="tips" label="Tips" href="/tips" />
+        <CategoryButton icon="container" label="Container" href="/container" />
+        <CategoryButton icon="help" label="Help" href="/help" />
       </div>
     </div>
   )
@@ -14,14 +16,13 @@ export default function CategoryButtons() {
 interface CategoryButtonProps {
   icon: "tips" | "container" | "help"
   label: string
+  href?: string
 }
 
-function CategoryButton({ icon, label }: CategoryButtonProps) {
-  return (
-    <div className="flex flex-col items-center">
-      <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center mb-1 relative">
-        {icon === "tips" && (
-          <svg
+function CategoryButton({ icon, label, href }: CategoryButtonProps) {
+  const iconSVG = {
+    tips: (
+         <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
@@ -33,8 +34,8 @@ function CategoryButton({ icon, label }: CategoryButtonProps) {
               clipRule="evenodd"
             />
           </svg>
-        )}
-        {icon === "container" && (
+    ),
+    container: (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -48,14 +49,28 @@ function CategoryButton({ icon, label }: CategoryButtonProps) {
               clipRule="evenodd"
             />
           </svg>
-        )}
-        {icon === "help" && (
-          <div className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center text-xl font-bold">
-            ?
-          </div>
-        )}
+    ),
+    help: (
+      <div className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center text-xl font-bold">
+        ?
+      </div>
+    ),
+  }
+
+  const content = (
+    <div className="flex flex-col items-center">
+      <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center mb-1 relative">
+        {iconSVG[icon]}
       </div>
       <span className="text-sm">{label}</span>
     </div>
+  )
+
+  return href ? (
+    <Link href={href} className="flex flex-col items-center">
+      {content}
+    </Link>
+  ) : (
+    content
   )
 }
