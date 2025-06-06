@@ -1,28 +1,31 @@
 "use client";
 
-import { ChevronLeft, Bell, LayoutGrid, Lightbulb, Users } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { ChevronLeft } from "lucide-react";
+// import { Bell, LayoutGrid, Lightbulb, Users } from "lucide-react";
+// import { usePathname, useRouter } from "next/navigation";
+//import { cn } from "@/lib/utils";
 import { CustomButton } from "@/components/ui/custom-button";
 import { Navbar } from "@/components/ui/navbar";
 import { RecCard } from "@/components/ui/rec-card";
 import { useState } from "react";
+import Image from "next/image";
+import { SearchResult } from "../../../types/type";
 
 export default function TipsPage() {
-  const pathname = usePathname();
-  const router = useRouter();
+  // const pathname = usePathname();
+  // const router = useRouter();
 
-  const navItems = [
-    { icon: Bell, path: "/notifications" },
-    { icon: LayoutGrid, path: "/dashboard" },
-    { icon: Lightbulb, path: "/tips" },
-    { icon: Users, path: "/profile" },
-  ];
+  // const navItems = [
+  //   { icon: Bell, path: "/notifications" },
+  //   { icon: LayoutGrid, path: "/dashboard" },
+  //   { icon: Lightbulb, path: "/tips" },
+  //   { icon: Users, path: "/profile" },
+  // ];
 
   const [activeTab, setActiveTab] = useState<"cook" | "store" | null>(null);
   const [searchInput, setSearchInput] = useState("");
   const [selectedBadges, setSelectedBadges] = useState<string[]>([]);
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
   const handleSearch = () => {
     if (searchInput.trim() || selectedBadges.length > 0) {
@@ -91,7 +94,7 @@ export default function TipsPage() {
         key={index}
         className="flex items-center p-4 rounded-xl shadow-sm bg-[#FFF1DD]"
       >
-        <img
+        <Image
           src={item.image}
           alt={item.title}
           className="w-20 h-20 object-contain mr-4"

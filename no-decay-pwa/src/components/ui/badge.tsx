@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
-
+import Image from "next/image";
 interface BadgeItemProps {
   label: string;
   icon?: string;
@@ -32,7 +32,13 @@ export function BadgeItem({
     >
       <div className="flex items-center gap-1">
         {imageSrc ? (
-          <img src={imageSrc} alt={label} className="w-[14px] h-[12px] object-contain" />
+          <Image
+            src={imageSrc}
+            alt={label}
+            width={14}
+            height={12}
+            className="w-[14px] h-[12px] object-contain"
+          />
         ) : icon ? (
           <span className="text-xs">{icon}</span>
         ) : null}

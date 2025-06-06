@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { SensorData } from "../../types/type";
 import {
   ChartContainer,
   ChartTooltip,
@@ -43,7 +44,7 @@ type Props = {
 }
 
 export function SensorChart({ containerId }: Props) {
-  const [data, setData] = useState<any[]>([])
+  const [data, setData] = useState<SensorData[]>([]);
 
   useEffect(() => {
     async function fetchData() {

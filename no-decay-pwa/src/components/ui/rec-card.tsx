@@ -2,6 +2,7 @@ import { Plus } from "lucide-react";
 import { BadgeItem } from "@/components/ui/badge";
 import SearchBar from "@/components/ui/search-bar";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface RecCardProps {
   searchInput: string;
@@ -34,7 +35,7 @@ export function RecCard({
         <p className="text-green-900 text-[20px] font-semibold">
           We’ve got gentle tips for you!
         </p>
-        <img src="/image/tips.svg" alt="Tips Icon" className="w-16 h-16" />
+        <Image src="/image/tips.svg" alt="Tips Icon" className="w-16 h-16" />
       </div>
 
       {/* Badges */}
