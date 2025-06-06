@@ -7,7 +7,7 @@ import {
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+//import { Button } from "@/components/ui/button"
 
 type Status = "Fresh" | "Warning" | "Spoiled"
 
@@ -17,11 +17,11 @@ const statusColor: Record<Status, string> = {
   Spoiled: "bg-red-700",
 }
 
-const indicatorColor: Record<Status, string> = {
-  Fresh: "text-green-800",
-  Warning: "text-orange-600",
-  Spoiled: "text-red-600",
-}
+// const indicatorColor: Record<Status, string> = {
+//   Fresh: "text-green-800",
+//   Warning: "text-orange-600",
+//   Spoiled: "text-red-600",
+// }
 
 const containers: { id: number; name: string; date: string; status: Status }[] = [
   {
