@@ -3,7 +3,6 @@ import { BadgeItem } from "@/components/ui/badge";
 import SearchBar from "@/components/ui/search-bar";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-
 interface RecCardProps {
   searchInput: string;
   setSearchInput: (val: string) => void;
@@ -29,11 +28,11 @@ export function RecCard({
   };
 
   return (
-    <div className="w-[350px] rounded-[12px] bg-gradient-to-br from-[#FFF9E4] to-[#FFE9A0] p-[20px] flex flex-col">
+    <div className="w-full max-w-md mx-auto rounded-[12px] bg-gradient-to-br from-[#FFF9E4] to-[#FFE9A0] p-[20px] flex flex-col">
       {/* Header */}
       <div className="flex items-center gap-x-[15px]">
         <p className="text-green-900 text-[20px] font-semibold">
-          We’ve got gentle tips for you!
+          We&apos;ve got gentle tips for you!
         </p>
         <Image src="/image/tips.svg" alt="Tips Icon" className="w-16 h-16" />
       </div>

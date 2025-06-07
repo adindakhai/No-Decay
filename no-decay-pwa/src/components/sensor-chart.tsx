@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { SensorData } from "../../types/type";
 import {
   ChartContainer,
   ChartTooltip,
@@ -16,6 +15,7 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts"
+import { SensorDataPoint } from "../../types/types"
 
 const sensorChartConfig = {
   temperature: {
@@ -44,7 +44,7 @@ type Props = {
 }
 
 export function SensorChart({ containerId }: Props) {
-  const [data, setData] = useState<SensorData[]>([]);
+  const [data, setData] = useState<SensorDataPoint[]>([])
 
   useEffect(() => {
     async function fetchData() {

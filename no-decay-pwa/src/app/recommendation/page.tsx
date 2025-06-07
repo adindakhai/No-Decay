@@ -1,31 +1,21 @@
 "use client";
 
 import { ChevronLeft } from "lucide-react";
-// import { Bell, LayoutGrid, Lightbulb, Users } from "lucide-react";
-// import { usePathname, useRouter } from "next/navigation";
-//import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import { CustomButton } from "@/components/ui/custom-button";
 import { Navbar } from "@/components/ui/navbar";
 import { RecCard } from "@/components/ui/rec-card";
 import { useState } from "react";
-import Image from "next/image";
-import { SearchResult } from "../../../types/type";
+import { Recommendation } from "../../../types/types";
+import  Image from "next/image";
 
 export default function TipsPage() {
-  // const pathname = usePathname();
-  // const router = useRouter();
-
-  // const navItems = [
-  //   { icon: Bell, path: "/notifications" },
-  //   { icon: LayoutGrid, path: "/dashboard" },
-  //   { icon: Lightbulb, path: "/tips" },
-  //   { icon: Users, path: "/profile" },
-  // ];
+  const router = useRouter();
 
   const [activeTab, setActiveTab] = useState<"cook" | "store" | null>(null);
   const [searchInput, setSearchInput] = useState("");
   const [selectedBadges, setSelectedBadges] = useState<string[]>([]);
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchResults, setSearchResults] = useState<Recommendation[]>([]);
 
   const handleSearch = () => {
     if (searchInput.trim() || selectedBadges.length > 0) {
@@ -37,39 +27,42 @@ export default function TipsPage() {
           store: "Keep Frozen",
           ingredients: "3 Ingredients",
         },
-        // Bisa tambahkan hasil lainnya juga di sini
       ]);
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen px-4 pt-4 pb-32 bg-white left-4 right-4 max-w-md mx-auto">
-      {/* Header */}
-      <div className="flex items-center space-x-2">
-        <ChevronLeft className="w-5 h-5 text-green-900" />
-        <h1 className="text-green-900 font-semibold text-lg">Tips</h1>
-      </div>
+    <div className="min-h-screen bg-white flex flex-col">
+      <div className="w-full max-w-md mx-auto px-4 flex flex-col flex-1 pt-4 pb-32">
+        {/* Header */}
+        <div className="flex items-center space-x-2 w-full">
+          <ChevronLeft 
+            className="w-5 h-5 text-green-900 cursor-pointer" 
+            onClick={() => router.push('/')} 
+          />
+          <h1 className="text-green-900 font-semibold text-lg">Tips</h1>
+        </div>
 
-      {/* Title */}
-      <div className="mt-4 w-full">
-        <h2 className="text-[32px] font-bold text-green-900 leading-snug">
-          What to do with your<br />fruits & veggies?
-        </h2>
-      </div>
+        {/* Title */}
+        <div className="mt-4 w-full">
+          <h2 className="text-2xl md:text-[32px] font-bold text-green-900 leading-snug">
+            What to do with your<br />fruits & veggies?
+          </h2>
+        </div>
 
-      {/* Rec Card */}
-      <div className="mt-4">
-        <RecCard
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
-          selectedBadges={selectedBadges}
-          setSelectedBadges={setSelectedBadges}
-          onSearch={handleSearch}
-        />
-      </div>
+        {/* Rec Card */}
+        <div className="mt-4 w-full">
+          <RecCard
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}
+            selectedBadges={selectedBadges}
+            setSelectedBadges={setSelectedBadges}
+            onSearch={handleSearch}
+          />
+        </div>
 
-      {/* Filter Buttons */}
-        <div className="mt-4 flex gap-[25px]">
+        {/* Filter Buttons */}
+        <div className="mt-4 flex flex-wrap gap-2 md:gap-[25px] w-full">
           <CustomButton
             variant="outline"
             isActive={activeTab === "cook"}
@@ -87,36 +80,38 @@ export default function TipsPage() {
           </CustomButton>
         </div>
 
-{searchResults.length > 0 && (activeTab === "cook" || activeTab === null) && (
-  <div className="mt-4 space-y-3 w-[350px]">
-    {searchResults.map((item, index) => (
-      <div
-        key={index}
-        className="flex items-center p-4 rounded-xl shadow-sm bg-[#FFF1DD]"
-      >
-        <Image
-          src={item.image}
-          alt={item.title}
-          className="w-20 h-20 object-contain mr-4"
-        />
-        <div>
-          <h3 className="font-semibold text-green-900 text-sm">
-            {item.title}
-          </h3>
-          <div className="text-sm mt-1 space-y-[2px] text-green-900">
-            <p>⏱ {item.freeze}</p>
-            <p>🧊 {item.store}</p>
-            <p>🌿 {item.ingredients}</p>
+        {/* Search Results Section */}
+        {searchResults.length > 0 && (
+          <div className="mt-6 w-full">
+            <div className="flex items-center justify-between mb-2 w-full">
+              <h3 className="text-green-900 font-semibold text-lg">Recommendation</h3>
+              <button className="text-green-900 font-bold text-base">See All</button>
+            </div>
+            <div className="flex flex-col gap-4 w-full">
+              {searchResults.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex w-full bg-[#FFF1DD] rounded-2xl p-4 shadow-sm gap-4 items-center"
+                >
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    className="w-20 h-20 object-contain flex-shrink-0"
+                  />
+                  <div className="flex-1">
+                    <h4 className="font-bold text-green-900 text-lg mb-1">{item.title}</h4>
+                    <div className="text-green-900 text-base flex flex-col gap-1">
+                      <div className="flex items-center gap-2"><span role='img' aria-label='timer'>⏱</span> {item.freeze}</div>
+                      <div className="flex items-center gap-2"><span role='img' aria-label='frozen'>🧊</span> {item.store}</div>
+                      <div className="flex items-center gap-2"><span role='img' aria-label='ingredients'>🌿</span> {item.ingredients}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
-    ))}
-  </div>
-)}
-
-
-
-      {/* Bottom Nav */}
       <Navbar />
     </div>
   );

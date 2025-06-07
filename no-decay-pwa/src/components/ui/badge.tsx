@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+
 interface BadgeItemProps {
   label: string;
   icon?: string;
