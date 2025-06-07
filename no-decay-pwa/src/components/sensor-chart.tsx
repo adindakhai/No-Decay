@@ -15,6 +15,7 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts"
+import { SensorDataPoint } from "../../types/types"
 
 const sensorChartConfig = {
   temperature: {
@@ -43,7 +44,7 @@ type Props = {
 }
 
 export function SensorChart({ containerId }: Props) {
-  const [data, setData] = useState<any[]>([])
+  const [data, setData] = useState<SensorDataPoint[]>([])
 
   useEffect(() => {
     async function fetchData() {

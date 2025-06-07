@@ -12,10 +12,10 @@ export default function GreetingCard({ name }: GreetingCardProps) {
   const [searchInput, setSearchInput] = useState("")
 
   return (
-    <div className="relative overflow-hidden rounded-xl text-white p-5 bg-gradient-to-br from-[#115437] to-[#FFE9A0]">
+    <div className="relative overflow-hidden rounded-xl text-white p-4 bg-gradient-to-br from-[#115437] to-[#FFE9A0]">
       <div className="flex items-start">
         <div className="flex items-center">
-          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center mr-2">
+          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center mr-4">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
               <path
                 fillRule="evenodd"
@@ -28,7 +28,7 @@ export default function GreetingCard({ name }: GreetingCardProps) {
         </div>
       </div>
 
-      <div className="mt-3">
+      <div className="mt-4">
         <h1 className="text-2xl font-bold text-[#FFE9A0] leading-tight">
           Just fresh,<br />just right.
         </h1>
@@ -41,7 +41,7 @@ export default function GreetingCard({ name }: GreetingCardProps) {
         />
       </div>
 
-      <div className="absolute right-5 bottom-10 w-36 h-auto z-100">
+      <div className="absolute right-4 bottom-4 w-36 h-auto z-100">
         <Image
           src="/image/sayurhome.svg"
           alt="Fresh vegetables"

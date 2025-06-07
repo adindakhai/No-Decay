@@ -106,7 +106,13 @@ export async function GET(req: Request) {
       },
     })
 
-    const formatted = data.map((item) => ({
+    const formatted = data.map((item: {
+      temperature: number;
+      humidity: number;
+      mq4: number;
+      mq135: number;
+      createdAt: Date;
+    }) => ({
       time: item.createdAt.toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
