@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     })
 
     // 2. Panggil backend Flask untuk prediksi
-    const mlResponse = await axios.post("http://localhost:5000/predict", {
+    const mlResponse = await axios.post(process.env.ML_BACKEND_URL!, {
       temperature,
       humidity,
       mq4,
