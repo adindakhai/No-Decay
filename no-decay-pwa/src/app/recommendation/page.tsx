@@ -118,7 +118,7 @@ export default function TipsPage() {
         {activeTab === "store" && (
           <div className="mt-6 w-full text-center">
             <p className="text-green-900 text-lg">
-              We don't have storage recommendations for this item yet. Check back soon!
+              We don&apos;t have storage recommendations for this item yet. Check back soon!
             </p>
           </div>
         )}
