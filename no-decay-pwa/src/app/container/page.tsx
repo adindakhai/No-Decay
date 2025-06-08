@@ -58,6 +58,30 @@ export default function ContainerPage() {
       setContainers(defaultContainers)
       localStorage.setItem('containers', JSON.stringify(defaultContainers))
     }
+
+    // Tambahkan event listener untuk storage agar update otomatis
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === 'containers') {
+        const updatedContainers = event.newValue ? JSON.parse(event.newValue) : []
+        setContainers(updatedContainers)
+      }
+    }
+    window.addEventListener('storage', handleStorageChange)
+
+    // Tambahkan event listener untuk focus agar refresh data saat kembali ke halaman
+    const handleFocus = () => {
+      const savedContainers = localStorage.getItem('containers')
+      if (savedContainers) {
+        setContainers(JSON.parse(savedContainers))
+      }
+    }
+    window.addEventListener('focus', handleFocus)
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('focus', handleFocus)
+    }
   }, [])
 
   const handleAddContainer = (name: string) => {

@@ -64,5 +64,4 @@ function CategoryButton({ icon, label, href, imageClassName }: CategoryButtonPro
       </div>
     </div>
   )
-
 }
