@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import axios from "axios"
+import { sendFCMNotification } from "@/lib/fcm" // kamu harus buat ini
 
 export async function POST(req: Request) {
   try {
@@ -25,27 +26,42 @@ export async function POST(req: Request) {
       },
     })
 
-    // 2. Panggil backend Flask untuk prediksi
+    // 2. Kirim ke backend ML Flask
     const mlResponse = await axios.post(process.env.ML_BACKEND_URL!, {
       temperature,
       humidity,
       mq4,
       mq135,
     })
-    const status = mlResponse.data.status as string  // Fresh / Warning / Spoiled
+    const status = mlResponse.data.status as string // Fresh / Warning / Spoiled
 
-    // 3. Simpan hasil prediksi ke DB
-    const prediction = await prisma.prediction.create({
+    // 3. Simpan hasil prediksi
+    await prisma.prediction.create({
       data: {
         sensorId: sensorData.id,
         status,
       },
     })
 
+    // 4. Kirim notifikasi jika hasilnya warning/spoiled
+    if (status === "warning" || status === "spoiled") {
+      const tokens = await prisma.deviceToken.findMany()
+
+      for (const token of tokens) {
+        await sendFCMNotification(token.token, {
+          title: "⚠️ Kondisi Makanan",
+          body:
+            status === "spoiled"
+              ? "🚨 Makanan kemungkinan besar sudah busuk!"
+              : "⚠️ Kondisi penyimpanan kurang ideal.",
+        })
+      }
+    }
+
     return NextResponse.json({
       success: true,
       data: sensorData,
-      prediction: prediction.status,
+      prediction: status,
     })
   } catch (error) {
     console.error("POST /api/sensor error:", error)
@@ -69,7 +85,7 @@ export async function GET(req: Request) {
   }
 
   try {
-    // Jika latest=true → return data terbaru + prediction
+    // Jika latest=true → ambil data terbaru + prediksi
     if (latest === "true") {
       const latestData = await prisma.sensorData.findFirst({
         where: { containerId },
@@ -93,26 +109,20 @@ export async function GET(req: Request) {
       })
     }
 
-    // Else → return full list untuk chart
+    // Jika tidak → ambil list semua data untuk chart
     const data = await prisma.sensorData.findMany({
       where: { containerId },
       orderBy: { createdAt: "asc" },
       select: {
         temperature: true,
         humidity: true,
-        mq4: true,      
-        mq135: true,    
+        mq4: true,
+        mq135: true,
         createdAt: true,
       },
     })
 
-    const formatted = data.map((item: {
-      temperature: number;
-      humidity: number;
-      mq4: number;
-      mq135: number;
-      createdAt: Date;
-    }) => ({
+    const formatted = data.map((item) => ({
       time: item.createdAt.toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
@@ -120,8 +130,8 @@ export async function GET(req: Request) {
       }),
       temperature: item.temperature,
       humidity: item.humidity,
-      mq4: item.mq4,        
-      mq135: item.mq135,    
+      mq4: item.mq4,
+      mq135: item.mq135,
     }))
 
     return NextResponse.json(formatted)

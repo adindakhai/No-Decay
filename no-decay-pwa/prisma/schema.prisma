@@ -89,3 +89,10 @@ model Prediction {
   createdAt  DateTime    @default(now())
   sensorData SensorData  @relation(fields: [sensorId], references: [id])
 }
+
+model DeviceToken {
+  id        String   @id @default(uuid())
+  userId    String?
+  token     String   @unique
+  createdAt DateTime @default(now())
+}
