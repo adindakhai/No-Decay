@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/ui/navbar";
 
@@ -68,9 +68,6 @@ export default function NotificationsPage() {
                 })}
               </span>
             </div>
-            <button className="absolute -right-2 -top-2 w-9 h-9 flex items-center justify-center rounded-full">
-              <X className="w-5 h-5 text-[#2C2C2C]" />
-            </button>
           </div>
         ))}
       </div>
