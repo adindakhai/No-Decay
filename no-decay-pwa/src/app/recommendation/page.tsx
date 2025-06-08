@@ -22,7 +22,7 @@ export default function TipsPage() {
       setSearchResults([
         {
           title: "Frozen Banana Bites",
-          image: "/image/banana.png",
+          image: "/image/frozen-banana-bites-recipe.jpg",
           freeze: "3 Hours Freeze",
           store: "Keep Frozen",
           ingredients: "3 Ingredients",
@@ -81,7 +81,7 @@ export default function TipsPage() {
         </div>
 
         {/* Search Results Section */}
-        {searchResults.length > 0 && (
+        {activeTab === "cook" && searchResults.length > 0 && (
           <div className="mt-6 w-full">
             <div className="flex items-center justify-between mb-2 w-full">
               <h3 className="text-green-900 font-semibold text-lg">Recommendation</h3>
@@ -96,6 +96,8 @@ export default function TipsPage() {
                   <Image
                     src={item.image}
                     alt={item.title}
+                    width={80}
+                    height={80}
                     className="w-20 h-20 object-contain flex-shrink-0"
                   />
                   <div className="flex-1">
@@ -109,6 +111,15 @@ export default function TipsPage() {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Storage Message */}
+        {activeTab === "store" && (
+          <div className="mt-6 w-full text-center">
+            <p className="text-green-900 text-lg">
+              We don't have storage recommendations for this item yet. Check back soon!
+            </p>
           </div>
         )}
       </div>

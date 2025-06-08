@@ -46,7 +46,7 @@ export default function ProfilePage() {
             <div className="relative w-[150px] h-[150px]">
               <div className="w-full h-full rounded-full overflow-hidden border-4 border-[#115437]">
                 <Image
-                  src="/image/default-avatar.png"
+                  src="/image/placeholder.png"
                   alt="Profile"
                   width={150}
                   height={150}

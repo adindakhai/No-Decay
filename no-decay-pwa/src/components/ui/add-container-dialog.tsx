@@ -53,8 +53,18 @@ export function AddContainerDialog({ onAddContainer }: AddContainerDialogProps) 
             />
           </div>
         </div>
-        <DialogFooter>
-          <Button onClick={handleSubmit} className="bg-green-900 hover:bg-green-800">
+        <DialogFooter className="gap-2 sm:gap-0">
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+            className="flex-1"
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleSubmit} 
+            className="flex-1 bg-green-900 hover:bg-green-800 text-white"
+          >
             Add Container
           </Button>
         </DialogFooter>

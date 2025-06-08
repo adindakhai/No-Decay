@@ -48,12 +48,14 @@ export function DeleteContainerDialog({ containerName, onDelete }: DeleteContain
           <Button
             variant="outline"
             onClick={() => setOpen(false)}
+            className="flex-1"
           >
             Cancel
           </Button>
           <Button
             variant="destructive"
             onClick={handleDelete}
+            className="flex-1"
           >
             Delete
           </Button>

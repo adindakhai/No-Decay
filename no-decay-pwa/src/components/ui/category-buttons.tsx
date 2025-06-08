@@ -9,16 +9,16 @@ export default function CategoryButtons() {
     <div className="relative w-full h-[110px]">
       <div className="absolute w-full h-full flex justify-between gap-4">
         <CategoryButton 
-          icon="/image/containerawal.png" 
+          icon="/image/tips.png" 
           label="Tips" 
           href="/recommendation"
           imageClassName="w-[85px] h-[87px] mt-0"
         />
         <CategoryButton 
-          icon="/image/tips.png" 
+          icon="/image/containerawal.png" 
           label="Container" 
           href="/container"
-          imageClassName="w-[85px] h-[85px] mt-5"
+          imageClassName="w-[85px] h-[85px] mt-2"
         />
         <CategoryButton 
           icon="/image/bantuan.png" 

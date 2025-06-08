@@ -83,7 +83,7 @@ export default function EditProfilePage() {
             <div className="relative w-[200px] h-[200px]">
               <div className="w-full h-full rounded-full overflow-hidden border-4 border-[#115437]">
                 <Image
-                  src={selectedImage || "/image/default-avatar.png"}
+                  src={selectedImage || "/image/placeholder.png"}
                   alt="Profile"
                   width={200}
                   height={200}

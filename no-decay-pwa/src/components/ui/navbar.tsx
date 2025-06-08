@@ -18,7 +18,7 @@ export function Navbar() {
   return (
     <nav
       className={cn(
-        "fixed bottom-4 left-4 right-4 z-50 bg-green-900 shadow-[0_4px_15px_rgba(0,0,0,0.25)] rounded-[12px] py-3 flex justify-between items-center md:justify-center md:gap-x-[35px]"
+        "fixed bottom-4 left-4 right-4 z-50 bg-green-900 shadow-[0_4px_15px_rgba(0,0,0,0.25)] rounded-[12px] py-3 px-4 flex justify-between items-center md:justify-center md:gap-x-[35px] max-w-screen-md mx-auto"
       )}
     >
       {navItems.map(({ icon: Icon, path }, i) => {

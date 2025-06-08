@@ -34,7 +34,7 @@ export function RecCard({
         <p className="text-green-900 text-[20px] font-semibold">
           We&apos;ve got gentle tips for you!
         </p>
-        <Image src="/image/tips.svg" alt="Tips Icon" fill className="w-16 h-16" />
+        <Image src="/image/tips.svg" alt="Tips Icon" width={64} height={64} className="w-16 h-16" />
       </div>
 
       {/* Badges */}

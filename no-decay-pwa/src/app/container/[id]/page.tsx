@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { ArrowLeft, Calendar, Thermometer, Droplets, Wind } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -19,9 +19,11 @@ type LatestSensor = {
 
 export default function ContainerDetailPage() {
   const params = useParams()
+  const router = useRouter()
   const rawId = params.id
   const containerId = Array.isArray(rawId) ? rawId[0] : rawId || "1"
   const [latest, setLatest] = useState<LatestSensor | null>(null)
+  const [showChart, setShowChart] = useState(false)
 
   useEffect(() => {
     async function fetchLatest() {
@@ -114,17 +116,28 @@ export default function ContainerDetailPage() {
       </Card>
 
       {/* Prediction Chart */}
-      <div>
-        <h2 className="text-xl font-semibold text-green-900 mb-2">
-          Prediction
-        </h2>
-        <div className="w-full mt-4">
-          <SensorChart containerId={containerId} />
+      {showChart && (
+        <div>
+          <h2 className="text-xl font-semibold text-green-900 mb-2">
+            Prediction
+          </h2>
+          <div className="w-full mt-4">
+            <SensorChart containerId={containerId} />
+          </div>
         </div>
-      </div>
+      )}
 
-      <Button className="w-full bg-green-900 hover:bg-green-800 text-white text-lg rounded-xl py-6">
-        Analysis
+      <Button 
+        className="w-full bg-green-900 hover:bg-green-800 text-white text-lg rounded-xl py-6"
+        onClick={() => {
+          if (!showChart) {
+            setShowChart(true)
+          } else {
+            router.push('/recommendation')
+          }
+        }}
+      >
+        {showChart ? "See Tips?" : "Analysis"}
       </Button>
     </div>
   )
