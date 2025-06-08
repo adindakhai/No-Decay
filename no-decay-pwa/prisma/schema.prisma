@@ -96,3 +96,10 @@ model DeviceToken {
   token     String   @unique
   createdAt DateTime @default(now())
 }
+
+model Notification {
+  id        String   @id @default(uuid())
+  title     String
+  message   String
+  createdAt DateTime @default(now())
+}

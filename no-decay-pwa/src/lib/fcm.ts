@@ -1,5 +1,5 @@
 import admin from "firebase-admin";
-
+import { prisma } from "./prisma"
 // Cegah inisialisasi ulang (wajib di Next.js)
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -26,8 +26,18 @@ export async function sendFCMNotification(
         body: message.body,
       },
     });
-    console.log("✅ Notifikasi berhasil dikirim ke:", token);
+
+    // Simpan ke DB
+    await prisma.notification.create({
+      data: {
+        title: message.title,
+        message: message.body,
+      },
+    });
+
+    console.log("✅ Notifikasi dikirim & disimpan:", message.title);
   } catch (error) {
     console.error("❌ Gagal kirim notifikasi:", error);
   }
 }
+
